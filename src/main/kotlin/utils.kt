@@ -16,7 +16,7 @@ class InitialValuesInfo(
     x0: Double = 0.0,
     y0: Double = 1.0,
     xMax: Double = 20.0,
-    numberOfSteps: Int = 15
+    numberOfSteps: Int = 40
 ) {
     private val x0Property = SimpleDoubleProperty(x0)
     var x0 by x0Property
