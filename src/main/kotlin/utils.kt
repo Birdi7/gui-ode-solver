@@ -68,21 +68,34 @@ object ChartGenerator {
     fun getVboxWithAll(): VBox {
         val result = VBox()
         result += generateSolutionsChart()
+        result += generateLocalErrorsChart()
         return result
     }
 
     fun generateSolutionsChart(): LineChart<Number, Number> {
         val v = LineChart<Number, Number>(NumberAxis(), NumberAxis())
         v.series("Exact") {
-            for (entry in ExactSolution.computeFor(ComputationalMethodsManager.initialValues)) {
-                this.data(entry.key, entry.value)
+            for ((x, y) in ExactSolution.computeFor(ComputationalMethodsManager.initialValues)) {
+                this.data(x, y)
             }
         }
 
         for (name in ComputationalMethodsManager.listOfMethods.filter { it.value.isSelected }.keys) {
             v.series(name) {
-                for (entry in ComputationalMethodsManager.compute(name)) {
-                    this.data(entry.key, entry.value)
+                for ((x, y) in ComputationalMethodsManager.compute(name)) {
+                    this.data(x, y)
+                }
+            }
+        }
+        return v
+    }
+
+    fun generateLocalErrorsChart(): LineChart<Number, Number> {
+        val v = LineChart<Number, Number>(NumberAxis(), NumberAxis())
+        for (name in ComputationalMethodsManager.listOfMethods.filter { it.value.isSelected }.keys) {
+            v.series(name) {
+                for ((x, y) in ComputationalMethodsManager.computeLocalErrors(name)) {
+                    this.data(x, y)
                 }
             }
         }

@@ -8,12 +8,16 @@ object ComputationalMethodsManager {
 
     init {
         initMethod(EulerMethod())
-        initMethod(ImprovedEulerMethod())
-        initMethod(RungeKuttaMethod())
+//        initMethod(ImprovedEulerMethod())
+//        initMethod(RungeKuttaMethod())
     }
 
     fun compute(name: String): MutableMap<Double, Double> {
         return listOfMethods[name]!!.computeFor(initialValues)
+    }
+
+    fun computeLocalErrors(name: String): MutableMap<Double, Double> {
+        return listOfMethods[name]!!.computeLocalErrors(initialValues)
     }
 
     fun initMethod(method: ComputationalMethod) {
@@ -27,7 +31,7 @@ abstract class ComputationalMethod {
     var isSelected by isSelectedProperty
 
     abstract fun computeFor(initialValues: InitialValuesInfo): MutableMap<Double, Double>
-    abstract fun compute_local_errors(initialValues: InitialValuesInfo): MutableList<Double>
+    abstract fun computeLocalErrors(initialValues: InitialValuesInfo): MutableMap<Double, Double>
 }
 
 class EulerMethod : ComputationalMethod() {
@@ -47,11 +51,11 @@ class EulerMethod : ComputationalMethod() {
         return result
     }
 
-    override fun compute_local_errors(initialValues: InitialValuesInfo): MutableList<Double> {
-        val result = mutableListOf<Double>()
+    override fun computeLocalErrors(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
+        val result = mutableMapOf<Double, Double>()
         val computed_result = computeFor(initialValues)
-        for (pair in computed_result) {
-            result.add(ExactSolution.computeFor(pair.key) - pair.value)
+        for ((x, y) in computed_result) {
+            result[x] = ExactSolution.computeFor(x) - y
         }
         return result
     }
@@ -65,7 +69,7 @@ class ImprovedEulerMethod : ComputationalMethod() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun compute_local_errors(initialValues: InitialValuesInfo): MutableList<Double> {
+    override fun computeLocalErrors(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
@@ -77,7 +81,7 @@ class RungeKuttaMethod : ComputationalMethod() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun compute_local_errors(initialValues: InitialValuesInfo): MutableList<Double> {
+    override fun computeLocalErrors(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
