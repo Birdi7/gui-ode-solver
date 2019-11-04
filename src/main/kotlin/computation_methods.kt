@@ -9,7 +9,7 @@ object ComputationalMethodsManager {
     init {
         initMethod(EulerMethod())
         initMethod(ImprovedEulerMethod())
-//        initMethod(RungeKuttaMethod())
+        initMethod(RungeKuttaMethod())
     }
 
     fun compute(name: String): MutableMap<Double, Double> {
@@ -85,6 +85,23 @@ class RungeKuttaMethod : ComputationalMethod() {
     override val name = "Runge-Kutta method"
 
     override fun computeFor(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val result = mutableMapOf<Double, Double>()
+        var currentX = initialValues.x0
+        var currentY = initialValues.y0
+        result[currentX] = currentY
+
+        for (i in 0..initialValues.numberOfSteps) {
+            val h = initialValues.h
+
+            val k1 = initialValues.initialFunction.computeFor(currentX, currentY)
+            val k2 = initialValues.initialFunction.computeFor(currentX + h/2, currentY + h/2 * k1)
+            val k3 = initialValues.initialFunction.computeFor(currentX + h/2, currentY + h/2 * k2)
+            val k4 = initialValues.initialFunction.computeFor(currentX + h, currentY + h * k3)
+
+            currentY += h/6 * (k1 + 2 * k2 + 2 * k3 + k4)
+            currentX += initialValues.h
+            result[currentX] = currentY
+        }
+        return result
     }
 }
