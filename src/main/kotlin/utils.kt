@@ -51,7 +51,7 @@ data class TotalErrorData(var n0: Int = 1, var nMax: Int = 10) {
 }
 
 object ExactSolution {
-    override fun toString(): String = "(x+3*e^(4x)*(x+2)-2) / (3*e^(4x)+1)"
+    override fun toString(): String = "1/(const1 * e^(4x) - 0.25) + x + 2"
     private val constant
         get() = (exp(-4 * ComputationalMethodsManager.initialValues.x0) *
                     (0.25 + 1 /
