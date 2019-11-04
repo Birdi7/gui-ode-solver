@@ -78,7 +78,8 @@ object ChartGenerator {
                 this.data(entry.key, entry.value)
             }
         }
-        for (name in ComputationalMethodsManager.listOfMethods.keys) {
+
+        for (name in ComputationalMethodsManager.listOfMethods.filter { it.value.isSelected }.keys) {
             v.series(name) {
                 for (entry in ComputationalMethodsManager.compute(name)) {
                     this.data(entry.key, entry.value)

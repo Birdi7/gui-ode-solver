@@ -1,3 +1,6 @@
+import javafx.beans.property.SimpleBooleanProperty
+import tornadofx.*
+
 object ComputationalMethodsManager {
     val listOfMethods: MutableMap<String, ComputationalMethod> = mutableMapOf()
     val initialValues = InitialValuesInfo()
@@ -20,6 +23,9 @@ object ComputationalMethodsManager {
 
 abstract class ComputationalMethod {
     abstract val name: String
+    var isSelectedProperty = SimpleBooleanProperty(true)
+    var isSelected by isSelectedProperty
+
     abstract fun computeFor(initialValues: InitialValuesInfo): MutableMap<Double, Double>
     abstract fun compute_local_errors(initialValues: InitialValuesInfo): MutableList<Double>
 }
@@ -29,15 +35,14 @@ class EulerMethod : ComputationalMethod() {
 
     override fun computeFor(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
         val result = mutableMapOf<Double, Double>()
-        var previousX = initialValues.x0
-        var previousY = initialValues.y0
+        var currentX = initialValues.x0
+        var currentY = initialValues.y0
+        result[currentX] = currentY
 
         for (i in 0..initialValues.numberOfSteps) {
-            val newX = previousX + initialValues.h
-            val newY = previousY + initialValues.h * initialValues.initialFunction.computeFor(previousX, previousY)
-            result[newX] = newY
-            previousX = newX
-            previousY = newY
+            currentY += initialValues.h * initialValues.initialFunction.computeFor(currentX, currentY)
+            currentX += initialValues.h
+            result[currentX] = currentY
         }
         return result
     }

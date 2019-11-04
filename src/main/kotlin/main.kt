@@ -20,6 +20,11 @@ class MyView : View() {
             )
             right = ChartGenerator.getVboxWithAll()
             left = vbox {
+                fieldset("Select charts") {
+                    for ((name, method) in ComputationalMethodsManager.listOfMethods) {
+                        checkbox(name, method.isSelectedProperty)
+                    }
+                }
                 fieldset("Initial values") {
                     for ((name, property) in ComputationalMethodsManager.initialValues.mapOfProperties) {
                         vbox {
