@@ -18,21 +18,20 @@ class MyView : View() {
             )
             left = vbox {
                 fieldset("Initial values") {
-                    var pair = ComputationalMethodsManager.initialValues.mapOfProperties
-                    for (pair in ComputationalMethodsManager.initialValues.mapOfProperties) {
+                    for ((name, property) in ComputationalMethodsManager.initialValues.mapOfProperties) {
                         vbox {
-                            label(pair.key)
-                            textfield(pair.value) {
+                            label(name)
+                            textfield(property) {
                                 filterInput { it.controlNewText.isDouble() }
                             }
                         }
                     }
                 }
                 fieldset("Values for Max error") {
-                    for (pair in ComputationalMethodsManager.totalErrorInfo.mapOfProperties) {
+                    for ((name, property) in ComputationalMethodsManager.totalErrorInfo.mapOfProperties) {
                         vbox {
-                            label(pair.key)
-                            textfield(pair.value) {
+                            label(name)
+                            textfield(property) {
                                 filterInput { it.controlNewText.isDouble() }
                             }
                         }
