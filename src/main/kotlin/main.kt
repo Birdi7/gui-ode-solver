@@ -1,4 +1,3 @@
-import javafx.scene.chart.NumberAxis
 import javafx.stage.Stage
 import tornadofx.*
 
@@ -19,6 +18,8 @@ class MyView : View() {
                         "\nCreated by Egor Osokin, BS18-04 student" +
                         "\n\n"
             )
+            right = ChartGenerator.getVboxWithAll()
+
             left = vbox {
                 fieldset("Initial values") {
                     for ((name, property) in ComputationalMethodsManager.initialValues.mapOfProperties) {
@@ -26,7 +27,7 @@ class MyView : View() {
                             label(name)
                             textfield(property) {
                                 filterInput { it.controlNewText.isDouble() }
-                            }
+                            }.bind(property)
                         }
                     }
                 }
@@ -40,26 +41,13 @@ class MyView : View() {
                         }
                     }
                 }
-                button("Plot")
-            }
-
-            right = vbox {
-                linechart("Solutions", x = NumberAxis(), y = NumberAxis()) {
-                    series("Exact") {
-                        for (entry in ExactSolution.computeFor(ComputationalMethodsManager.initialValues)) {
-                            data(entry.key, entry.value)
-                        }
+                button("Plot") {
+                    action {
+                        right = ChartGenerator.getVboxWithAll()
                     }
-
-//                    for (name in ComputationalMethodsManager.listOfMethods.keys) {
-//                        series(name) {
-//                            for (entry in ComputationalMethodsManager.compute(name)) {
-//                                data(entry.key, entry.value)
-//                            }
-//                        }
-//                    }
                 }
             }
+
         }
     }
 }

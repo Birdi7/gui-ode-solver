@@ -1,5 +1,10 @@
 import javafx.beans.property.Property
-import tornadofx.toProperty
+import javafx.beans.property.SimpleDoubleProperty
+import javafx.beans.property.SimpleIntegerProperty
+import javafx.scene.chart.LineChart
+import javafx.scene.chart.NumberAxis
+import javafx.scene.layout.VBox
+import tornadofx.*
 import kotlin.math.exp
 
 object InitialValueFunction {
@@ -7,16 +12,20 @@ object InitialValueFunction {
     fun computeFor(x: Double, y: Double): Double = 5 - x * x - y * y + 2 * x * y
 }
 
-data class InitialValuesInfo(
-    var x0: Double = 0.0,
-    var y0: Double = 1.0,
-    var xMax: Double = 20.0,
-    var numberOfSteps: Int = 20
+class InitialValuesInfo(
+    x0: Double = 0.0,
+    y0: Double = 1.0,
+    xMax: Double = 20.0,
+    numberOfSteps: Int = 15
 ) {
-    private val x0Property = x0.toProperty()
-    private val y0Property = y0.toProperty()
-    private val xMaxProperty = xMax.toProperty()
-    private val numberOfStepsProperty = numberOfSteps.toProperty()
+    private val x0Property = SimpleDoubleProperty(x0)
+    var x0 by x0Property
+    private val y0Property = SimpleDoubleProperty(y0)
+    var y0 by y0Property
+    private val xMaxProperty = SimpleDoubleProperty(xMax)
+    var xMax by xMaxProperty
+    private val numberOfStepsProperty = SimpleIntegerProperty(numberOfSteps)
+    var numberOfSteps by numberOfStepsProperty
 
     val h: Double = (xMax - x0) / numberOfSteps.toDouble()
     val initialFunction = InitialValueFunction
@@ -51,5 +60,31 @@ object ExactSolution {
             x += initialValuesInfo.h
         }
         return result
+    }
+}
+
+
+object ChartGenerator {
+    fun getVboxWithAll(): VBox {
+        val result = VBox()
+        result += generateSolutionsChart()
+        return result
+    }
+
+    fun generateSolutionsChart(): LineChart<Number, Number> {
+        val v = LineChart<Number, Number>(NumberAxis(), NumberAxis())
+        v.series("Exact") {
+            for (entry in ExactSolution.computeFor(ComputationalMethodsManager.initialValues)) {
+                this.data(entry.key, entry.value)
+            }
+        }
+        for (name in ComputationalMethodsManager.listOfMethods.keys) {
+            v.series(name) {
+                for (entry in ComputationalMethodsManager.compute(name)) {
+                    this.data(entry.key, entry.value)
+                }
+            }
+        }
+        return v
     }
 }
