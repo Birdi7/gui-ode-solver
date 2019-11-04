@@ -27,7 +27,9 @@ class InitialValuesInfo(
     private val numberOfStepsProperty = SimpleIntegerProperty(numberOfSteps)
     var numberOfSteps by numberOfStepsProperty
 
-    val h: Double = (xMax - x0) / numberOfSteps.toDouble()
+    val h: Double
+        get ()  = (xMax - x0) / numberOfSteps.toDouble()
+
     val initialFunction = InitialValueFunction
 
     val mapOfProperties = mapOf<String, Property<Number>>(
