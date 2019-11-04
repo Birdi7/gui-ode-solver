@@ -12,14 +12,13 @@ class MyView : View() {
     override val root = form {
         borderpane {
             top = label(
-                "This application draw solutions " +
+                "This application draws solutions " +
                         "for ${ComputationalMethodsManager.initialValues.initialFunction}. " +
-                        "\nExact solution: ${ExactSolution}" +
+                        "Exact solution: ${ExactSolution}" +
                         "\nCreated by Egor Osokin, BS18-04 student" +
                         "\n\n"
             )
             right = ChartGenerator.getVboxWithAll()
-
             left = vbox {
                 fieldset("Initial values") {
                     for ((name, property) in ComputationalMethodsManager.initialValues.mapOfProperties) {
