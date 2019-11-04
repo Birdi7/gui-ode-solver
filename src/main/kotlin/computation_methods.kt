@@ -1,30 +1,3 @@
-import tornadofx.*
-
-data class InitialValuesInfo(var x0: Int = 1, var y0: Int = 2, var xMax: Int = 10, var numberOfSteps: Int = 10) {
-    val h: Double = (xMax.toDouble() - x0) / numberOfSteps
-    val x0Property = x0.toProperty()
-    val y0Property = y0.toProperty()
-    val xMaxProperty = xMax.toProperty()
-    val numberOfStepsProperty = numberOfSteps.toProperty()
-
-    val mapOfProperties = mapOf(
-        "x0" to x0Property,
-        "y0" to y0Property,
-        "xMax" to xMaxProperty,
-        "n" to numberOfStepsProperty
-    )
-}
-
-data class TotalErrorData(var n0: Int = 1, var nMax: Int = 10) {
-    val n0Property = n0.toProperty()
-    val nMaxProperty = nMax.toProperty()
-
-    val mapOfProperties = mapOf(
-        "n0" to n0Property,
-        "nMax" to nMaxProperty
-    )
-}
-
 object ComputationalMethodsManager {
     val listOfMethods: MutableMap<String, ComputationalMethod> = mutableMapOf()
     val initialValues = InitialValuesInfo()
@@ -41,22 +14,61 @@ object ComputationalMethodsManager {
     }
 }
 
-abstract class ComputationalMethod() {
+abstract class ComputationalMethod {
     abstract val name: String
+    abstract fun compute(initialValues: InitialValuesInfo): MutableMap<Double, Double>
+    abstract fun compute_local_errors(initialValues: InitialValuesInfo): MutableList<Double>
 }
 
-class EulerMethod: ComputationalMethod() {
+class EulerMethod : ComputationalMethod() {
     override val name = "Euler method"
+
+    override fun compute(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
+        val result = mutableMapOf<Double, Double>()
+        var previousX = initialValues.x0
+        var previousY = initialValues.y0
+
+        for (i in 0..initialValues.numberOfSteps) {
+            val newX = previousX + initialValues.h
+            val newY = previousY + initialValues.h * initialValues.initialFunction.computeFor(previousX, previousY)
+            result[newX] = newY
+            previousX = newX
+            previousY = newY
+        }
+        return result
+    }
+
+    override fun compute_local_errors(initialValues: InitialValuesInfo): MutableList<Double> {
+        val result = mutableListOf<Double>()
+        val computed_result = compute(initialValues)
+        for (pair in computed_result) {
+            result.add(ExactSolution.computeFor(pair.key) - pair.value)
+        }
+        return result
+    }
 }
 
-class ImprovedEulerMethod: ComputationalMethod() {
+class ImprovedEulerMethod : ComputationalMethod() {
     override val name = "Improved Euler method"
+
+    override fun compute(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
+
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun compute_local_errors(initialValues: InitialValuesInfo): MutableList<Double> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
 
-class RungeKuttaMethod: ComputationalMethod() {
+class RungeKuttaMethod : ComputationalMethod() {
     override val name = "Runge-Kutta method"
-}
 
-fun main() {
-    println(ComputationalMethodsManager.listOfMethods)
+    override fun compute(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun compute_local_errors(initialValues: InitialValuesInfo): MutableList<Double> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
