@@ -1,15 +1,17 @@
+import javafx.stage.Stage
 import tornadofx.*
 
-
-class MyApp: App(MyView::class)
+class MyApp: App(MyView::class) {
+    override fun start(stage: Stage) {
+        stage.isResizable = false
+        super.start(stage)
+    }
+}
 
 class MyView: View() {
     override val root = form {
         borderpane {
             left = vbox {
-                fieldset("Pick charts") {
-                    // todo: add checkboxes here
-                }
                 fieldset("Initial values") {
                     // todo: add textfields with links to properties of objects
                 }
