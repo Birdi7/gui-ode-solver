@@ -11,9 +11,17 @@ class MyApp: App(MyView::class) {
 class MyView: View() {
     override val root = form {
         borderpane {
+            top = label("This application draw solutions for y'=5-x^2-y^2+2xy. Created by Egor Osokin")
             left = vbox {
-                fieldset("Initial values") {
-                    // todo: add textfields with links to properties of objects
+                fieldset ("Initial values") {
+                    for (pair in ComputationalMethodsManager.initialValues.mapOfProperties) {
+                        vbox {
+                            label(pair.key)
+                            textfield(pair.value) {
+                                filterInput { it.controlNewText.isDouble() }
+                            }
+                        }
+                    }
                 }
                 fieldset("Values for Max error") {
                     // todo: add min_n max_n text fields
