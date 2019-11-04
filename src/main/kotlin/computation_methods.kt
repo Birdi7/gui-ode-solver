@@ -15,9 +15,20 @@ data class InitialValuesInfo(var x0: Int = 1, var y0: Int = 2, var xMax: Int = 1
     )
 }
 
+data class TotalErrorData(var n0: Int = 1, var nMax: Int = 10) {
+    val n0Property = n0.toProperty()
+    val nMaxProperty = nMax.toProperty()
+
+    val mapOfProperties = mapOf(
+        "n0" to n0Property,
+        "nMax" to nMaxProperty
+    )
+}
+
 object ComputationalMethodsManager {
     val listOfMethods: MutableMap<String, ComputationalMethod> = mutableMapOf()
     val initialValues = InitialValuesInfo()
+    val totalErrorInfo = TotalErrorData()
 
     init {
         initMethod(EulerMethod())
@@ -30,7 +41,7 @@ object ComputationalMethodsManager {
     }
 }
 
-abstract class ComputationalMethod(isSelected: Boolean=false) {
+abstract class ComputationalMethod() {
     abstract val name: String
 }
 

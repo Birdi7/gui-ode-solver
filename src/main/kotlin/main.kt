@@ -24,7 +24,14 @@ class MyView: View() {
                     }
                 }
                 fieldset("Values for Max error") {
-                    // todo: add min_n max_n text fields
+                    for (pair in ComputationalMethodsManager.totalErrorInfo.mapOfProperties) {
+                        vbox {
+                            label(pair.key)
+                            textfield(pair.value) {
+                                filterInput { it.controlNewText.isDouble() }
+                            }
+                        }
+                    }
                 }
                 button("Plot")
             }
