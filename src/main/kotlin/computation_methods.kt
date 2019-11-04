@@ -50,7 +50,7 @@ class EulerMethod : ComputationalMethod() {
         var currentY = initialValues.y0
         result[currentX] = currentY
 
-        for (i in 0..initialValues.numberOfSteps) {
+        for (i in 0 until initialValues.numberOfSteps) {
             currentY += initialValues.h * initialValues.initialFunction.computeFor(currentX, currentY)
             currentX += initialValues.h
             result[currentX] = currentY
@@ -68,7 +68,7 @@ class ImprovedEulerMethod : ComputationalMethod() {
         var currentY = initialValues.y0
         result[currentX] = currentY
 
-        for (i in 0..initialValues.numberOfSteps) {
+        for (i in 0 until initialValues.numberOfSteps) {
             val h = initialValues.h
 
             val k1 = initialValues.initialFunction.computeFor(currentX, currentY)
@@ -90,7 +90,7 @@ class RungeKuttaMethod : ComputationalMethod() {
         var currentY = initialValues.y0
         result[currentX] = currentY
 
-        for (i in 0..initialValues.numberOfSteps) {
+        for (i in 0 until initialValues.numberOfSteps) {
             val h = initialValues.h
 
             val k1 = initialValues.initialFunction.computeFor(currentX, currentY)

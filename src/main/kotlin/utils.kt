@@ -65,7 +65,7 @@ object ExactSolution {
     fun computeFor(initialValuesInfo: InitialValuesInfo): MutableMap<Double, Double> {
         val result = mutableMapOf<Double, Double>()
         var x = initialValuesInfo.x0
-        while (x < initialValuesInfo.xMax) {
+        while (x <= initialValuesInfo.xMax) {
             result[x] = computeFor(x)
             x += initialValuesInfo.h
         }
@@ -95,6 +95,11 @@ object ChartGenerator {
                 for ((x, y) in ComputationalMethodsManager.compute(name)) {
                     this.data(x, y)
                 }
+            }
+        }
+        v.series("Exact") {
+            for ((x, y) in ExactSolution.computeFor(ComputationalMethodsManager.initialValues)) {
+                this.data(x, y)
             }
         }
         return v
