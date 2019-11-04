@@ -10,7 +10,7 @@ object ComputationalMethodsManager {
     }
 
     fun compute(name: String): MutableMap<Double, Double> {
-        return listOfMethods[name]!!.compute(initialValues)
+        return listOfMethods[name]!!.computeFor(initialValues)
     }
 
     fun initMethod(method: ComputationalMethod) {
@@ -20,14 +20,14 @@ object ComputationalMethodsManager {
 
 abstract class ComputationalMethod {
     abstract val name: String
-    abstract fun compute(initialValues: InitialValuesInfo): MutableMap<Double, Double>
+    abstract fun computeFor(initialValues: InitialValuesInfo): MutableMap<Double, Double>
     abstract fun compute_local_errors(initialValues: InitialValuesInfo): MutableList<Double>
 }
 
 class EulerMethod : ComputationalMethod() {
     override val name = "Euler method"
 
-    override fun compute(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
+    override fun computeFor(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
         val result = mutableMapOf<Double, Double>()
         var previousX = initialValues.x0
         var previousY = initialValues.y0
@@ -44,7 +44,7 @@ class EulerMethod : ComputationalMethod() {
 
     override fun compute_local_errors(initialValues: InitialValuesInfo): MutableList<Double> {
         val result = mutableListOf<Double>()
-        val computed_result = compute(initialValues)
+        val computed_result = computeFor(initialValues)
         for (pair in computed_result) {
             result.add(ExactSolution.computeFor(pair.key) - pair.value)
         }
@@ -55,7 +55,7 @@ class EulerMethod : ComputationalMethod() {
 class ImprovedEulerMethod : ComputationalMethod() {
     override val name = "Improved Euler method"
 
-    override fun compute(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
+    override fun computeFor(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
 
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -68,7 +68,7 @@ class ImprovedEulerMethod : ComputationalMethod() {
 class RungeKuttaMethod : ComputationalMethod() {
     override val name = "Runge-Kutta method"
 
-    override fun compute(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
+    override fun computeFor(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
