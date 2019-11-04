@@ -28,7 +28,7 @@ class InitialValuesInfo(
     var numberOfSteps by numberOfStepsProperty
 
     val h: Double
-        get ()  = (xMax - x0) / numberOfSteps.toDouble()
+        get() = (xMax - x0) / numberOfSteps.toDouble()
 
     val initialFunction = InitialValueFunction
 
@@ -52,7 +52,15 @@ data class TotalErrorData(var n0: Int = 1, var nMax: Int = 10) {
 
 object ExactSolution {
     override fun toString(): String = "(x+3*e^(4x)*(x+2)-2) / (3*e^(4x)+1)"
-    fun computeFor(x: Double) = (x + 3 * exp(4 * x) * (x + 2) - 2) / (3 * exp(4 * x) + 1)
+    private val constant
+        get() = (exp(-4 * ComputationalMethodsManager.initialValues.x0) *
+                    (0.25 + 1 /
+                        (ComputationalMethodsManager.initialValues.y0 -
+                        ComputationalMethodsManager.initialValues.x0 - 2))
+                )
+
+
+    fun computeFor(x: Double) = 1 / (constant * exp(4 * x) - 0.25) + x + 2
 
     fun computeFor(initialValuesInfo: InitialValuesInfo): MutableMap<Double, Double> {
         val result = mutableMapOf<Double, Double>()
