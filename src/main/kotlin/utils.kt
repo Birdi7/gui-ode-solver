@@ -8,7 +8,7 @@ import tornadofx.*
 import kotlin.math.exp
 
 object InitialValueFunction {
-    override fun toString(): String = "y'=5-x^2 - y^2 + 2xy"
+    override fun toString(): String = "y' = 5-x^2 - y^2 + 2xy"
     fun computeFor(x: Double, y: Double): Double = 5 - x * x - y * y + 2 * x * y
 }
 
