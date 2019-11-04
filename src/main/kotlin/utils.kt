@@ -3,6 +3,8 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.chart.LineChart
 import javafx.scene.chart.NumberAxis
+import javafx.scene.layout.HBox
+import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import tornadofx.*
 import kotlin.math.exp
@@ -75,7 +77,7 @@ object ExactSolution {
 
 
 object ChartGenerator {
-    fun getVboxWithAll(): VBox {
+    fun getBoxWithAll(): Pane {
         val result = VBox()
         result += generateSolutionsChart()
         result += generateLocalErrorsChart()

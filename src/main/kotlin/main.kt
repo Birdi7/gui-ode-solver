@@ -18,7 +18,7 @@ class MyView : View() {
                         "\nCreated by Egor Osokin, BS18-04 student" +
                         "\n\n"
             )
-            right = ChartGenerator.getVboxWithAll()
+            right = ChartGenerator.getBoxWithAll()
             left = vbox {
                 fieldset("Select charts") {
                     for ((name, method) in ComputationalMethodsManager.listOfMethods) {
@@ -47,7 +47,7 @@ class MyView : View() {
                 }
                 button("Plot") {
                     action {
-                        right = ChartGenerator.getVboxWithAll()
+                        right = ChartGenerator.getBoxWithAll()
                     }
                 }
             }
