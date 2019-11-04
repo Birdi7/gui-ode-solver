@@ -1,3 +1,4 @@
+import javafx.scene.chart.NumberAxis
 import javafx.stage.Stage
 import tornadofx.*
 
@@ -14,7 +15,9 @@ class MyView : View() {
             top = label(
                 "This application draw solutions " +
                         "for ${ComputationalMethodsManager.initialValues.initialFunction}. " +
-                        "Created by Egor Osokin"
+                        "\nExact solution: ${ExactSolution}" +
+                        "\nCreated by Egor Osokin, BS18-04 student" +
+                        "\n\n"
             )
             left = vbox {
                 fieldset("Initial values") {
@@ -39,9 +42,22 @@ class MyView : View() {
                 }
                 button("Plot")
             }
+
             right = vbox {
-                fieldset {
-                    // todo: add charts
+                linechart("Solutions", x = NumberAxis(), y = NumberAxis()) {
+                    series("Exact") {
+                        for (entry in ExactSolution.computeFor(ComputationalMethodsManager.initialValues)) {
+                            data(entry.key, entry.value)
+                        }
+                    }
+
+//                    for (name in ComputationalMethodsManager.listOfMethods.keys) {
+//                        series(name) {
+//                            for (entry in ComputationalMethodsManager.compute(name)) {
+//                                data(entry.key, entry.value)
+//                            }
+//                        }
+//                    }
                 }
             }
         }

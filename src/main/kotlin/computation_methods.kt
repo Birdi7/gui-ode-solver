@@ -9,6 +9,10 @@ object ComputationalMethodsManager {
         initMethod(RungeKuttaMethod())
     }
 
+    fun compute(name: String): MutableMap<Double, Double> {
+        return listOfMethods[name]!!.compute(initialValues)
+    }
+
     fun initMethod(method: ComputationalMethod) {
         listOfMethods.put(method.name, method)
     }

@@ -1,5 +1,6 @@
 import javafx.beans.property.Property
 import tornadofx.toProperty
+import kotlin.math.exp
 
 object InitialValueFunction {
     override fun toString(): String = "y'=5-x^2 - y^2 + 2xy"
@@ -10,14 +11,14 @@ data class InitialValuesInfo(
     var x0: Double = 0.0,
     var y0: Double = 1.0,
     var xMax: Double = 20.0,
-    var numberOfSteps: Int = 10
+    var numberOfSteps: Int = 20
 ) {
     private val x0Property = x0.toProperty()
     private val y0Property = y0.toProperty()
     private val xMaxProperty = xMax.toProperty()
     private val numberOfStepsProperty = numberOfSteps.toProperty()
 
-    val h: Double = (xMax - x0) / numberOfSteps
+    val h: Double = (xMax - x0) / numberOfSteps.toDouble()
     val initialFunction = InitialValueFunction
 
     val mapOfProperties = mapOf<String, Property<Number>>(
@@ -39,6 +40,16 @@ data class TotalErrorData(var n0: Int = 1, var nMax: Int = 10) {
 }
 
 object ExactSolution {
-    override fun toString(): String = "1/(0.75*e^(4x)-0.25) + x + 2"
-    fun computeFor(x: Double) = 1.0 / (0.75 * Math.exp(4 * x) - 0.25) + x + 2
+    override fun toString(): String = "(x+3*e^(4x)*(x+2)-2) / (3*e^(4x)+1)"
+    fun computeFor(x: Double) = (x + 3 * exp(4 * x) * (x + 2) - 2) / (3 * exp(4 * x) + 1)
+
+    fun computeFor(initialValuesInfo: InitialValuesInfo): MutableMap<Double, Double> {
+        val result = mutableMapOf<Double, Double>()
+        var x = initialValuesInfo.x0
+        while (x < initialValuesInfo.xMax) {
+            result[x] = computeFor(x)
+            x += initialValuesInfo.h
+        }
+        return result
+    }
 }
