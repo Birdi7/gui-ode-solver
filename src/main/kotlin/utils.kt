@@ -86,7 +86,6 @@ object ExactSolution {
     }
 }
 
-
 object ChartGenerator {
     fun getBoxWithAll(): Pane {
         val result = HBox()
