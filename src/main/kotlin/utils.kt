@@ -148,7 +148,7 @@ object ChartGenerator {
     }
 }
 
-fun MutableMap<Double, Double>.getMyMax(): Double {
+fun MutableMap<Double, Double>.getMaxByValue(): Double {
     if (this.isEmpty()) return 0.0
     var max: Double = -1.0
     for ((k, v) in this) {

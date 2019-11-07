@@ -64,7 +64,7 @@ abstract class ComputationalMethod {
             val newIniValues = initialValues.clone()
             newIniValues.numberOfSteps = current_n
             val errors = computeLocalErrors(newIniValues)
-            result[current_n] = errors.getMyMax()
+            result[current_n] = errors.getMaxByValue()
         }
 
         return result
