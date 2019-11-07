@@ -71,17 +71,6 @@ abstract class ComputationalMethod {
     }
 }
 
-fun MutableMap<Double, Double>.getMyMax(): Double {
-    if (this.isEmpty()) return 0.0
-    var max: Double = -1.0
-    for ((k, v) in this) {
-        if (max == -1.0 || v > max) {
-            max = v
-        }
-    }
-    return max
-}
-
 class EulerMethod : ComputationalMethod() {
     override val name = "Euler method"
 
