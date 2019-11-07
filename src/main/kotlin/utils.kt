@@ -90,7 +90,7 @@ object ChartGenerator {
     fun getBoxWithAll(): Pane {
         val result = HBox()
         result += generateSolutionsChart()
-        result += VBox(generateLocalErrorsChart(), generateGlobalErrorsChart())
+        result += VBox(generateLocalErrorsChart(), generateTotalErrorsChart())
         return result
     }
 
@@ -125,9 +125,9 @@ object ChartGenerator {
         return chart
     }
 
-    fun generateGlobalErrorsChart(): LineChart<Number, Number> {
+    fun generateTotalErrorsChart(): LineChart<Number, Number> {
         val chart = getXYChart("n", "max error")
-        chart.title = "Global error chart"
+        chart.title = "Total error chart"
         for ((name, method) in ComputationalMethodsManager.getSelectedMethods()) {
             chart.series(name) {
                 for ((n, max_error) in ComputationalMethodsManager.computeGlobalErrors(name)) {
