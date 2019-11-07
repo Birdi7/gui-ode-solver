@@ -3,6 +3,7 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.chart.LineChart
 import javafx.scene.chart.NumberAxis
+import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import tornadofx.*
@@ -42,15 +43,15 @@ class InitialValuesInfo(
 
     fun clone(): InitialValuesInfo {
         return InitialValuesInfo(
-            x0=this.x0,
-            y0=this.y0,
+            x0 = this.x0,
+            y0 = this.y0,
             xMax = this.xMax,
             numberOfSteps = this.numberOfSteps
         )
     }
 }
 
-class TotalErrorData(n0: Int = 40, nMax: Int = 60) {
+class TotalErrorData(n0: Int = 100, nMax: Int = 200) {
     val n0Property = SimpleIntegerProperty(n0)
     var n0 by n0Property
     val nMaxProperty = SimpleIntegerProperty(nMax)
@@ -66,9 +67,9 @@ object ExactSolution {
     override fun toString(): String = "1/(const1 * e^(4x) - 0.25) + x + 2"
     private val constant
         get() = (exp(-4 * ComputationalMethodsManager.initialValues.x0) *
-                    (0.25 + 1 /
+                (0.25 + 1 /
                         (ComputationalMethodsManager.initialValues.y0 -
-                        ComputationalMethodsManager.initialValues.x0 - 2))
+                                ComputationalMethodsManager.initialValues.x0 - 2))
                 )
 
 
@@ -88,10 +89,9 @@ object ExactSolution {
 
 object ChartGenerator {
     fun getBoxWithAll(): Pane {
-        val result = VBox()
+        val result = HBox()
         result += generateSolutionsChart()
-        result += generateLocalErrorsChart()
-        result += generateGlobalErrorsChart()
+        result += VBox(generateLocalErrorsChart(), generateGlobalErrorsChart())
         return result
     }
 
