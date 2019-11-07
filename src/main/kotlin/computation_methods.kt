@@ -1,6 +1,10 @@
 import javafx.beans.property.SimpleBooleanProperty
-import tornadofx.*
+import tornadofx.getValue
+import tornadofx.setValue
 import java.lang.Math.abs
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.set
 
 object ComputationalMethodsManager {
     val listOfMethods: MutableMap<String, ComputationalMethod> = mutableMapOf()
@@ -13,12 +17,24 @@ object ComputationalMethodsManager {
         initMethod(RungeKuttaMethod())
     }
 
-    fun compute(name: String): MutableMap<Double, Double> {
-        return listOfMethods[name]!!.computeFor(initialValues)
+    fun getSelectedMethods(): Map<String, ComputationalMethod> {
+        return listOfMethods.filter { it.value.isSelected }
     }
 
-    fun computeLocalErrors(name: String): MutableMap<Double, Double> {
-        return listOfMethods[name]!!.computeLocalErrors(initialValues)
+    fun compute(name: String, iniValues: InitialValuesInfo = initialValues): MutableMap<Double, Double> {
+        return listOfMethods[name]!!.computeFor(iniValues)
+    }
+
+    fun computeLocalErrors(name: String, iniValues: InitialValuesInfo = initialValues): MutableMap<Double, Double> {
+        return listOfMethods[name]!!.computeLocalErrors(iniValues)
+    }
+
+    fun computeGlobalErrors(
+        name: String,
+        iniValues: InitialValuesInfo = initialValues,
+        data: TotalErrorData = totalErrorInfo
+    ): MutableMap<Double, Double> {
+        return listOfMethods[name]!!.computeGlobalErrors(initialValues, data)
     }
 
     fun initMethod(method: ComputationalMethod) {
@@ -32,6 +48,7 @@ abstract class ComputationalMethod {
     var isSelected by isSelectedProperty
 
     abstract fun computeFor(initialValues: InitialValuesInfo): MutableMap<Double, Double>
+
     fun computeLocalErrors(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
         val result = mutableMapOf<Double, Double>()
         val computed_result = computeFor(initialValues)
@@ -39,6 +56,10 @@ abstract class ComputationalMethod {
             result[x] = abs(ExactSolution.computeFor(x) - y)
         }
         return result
+    }
+
+    fun computeGlobalErrors(initialValues: InitialValuesInfo, errorData: TotalErrorData): MutableMap<Double, Double> {
+        return mutableMapOf()
     }
 }
 
@@ -74,7 +95,7 @@ class ImprovedEulerMethod : ComputationalMethod() {
 
             val k1 = initialValues.initialFunction.computeFor(currentX, currentY)
             val k2 = initialValues.initialFunction.computeFor(currentX + h, currentY + h * k1)
-            currentY += h/2.0 * (k1 + k2)
+            currentY += h / 2.0 * (k1 + k2)
             currentX += initialValues.h
             result[currentX] = currentY
         }
@@ -95,11 +116,11 @@ class RungeKuttaMethod : ComputationalMethod() {
             val h = initialValues.h
 
             val k1 = initialValues.initialFunction.computeFor(currentX, currentY)
-            val k2 = initialValues.initialFunction.computeFor(currentX + h/2, currentY + h/2 * k1)
-            val k3 = initialValues.initialFunction.computeFor(currentX + h/2, currentY + h/2 * k2)
+            val k2 = initialValues.initialFunction.computeFor(currentX + h / 2, currentY + h / 2 * k1)
+            val k3 = initialValues.initialFunction.computeFor(currentX + h / 2, currentY + h / 2 * k2)
             val k4 = initialValues.initialFunction.computeFor(currentX + h, currentY + h * k3)
 
-            currentY += h/6 * (k1 + 2 * k2 + 2 * k3 + k4)
+            currentY += h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
             currentX += initialValues.h
             result[currentX] = currentY
         }

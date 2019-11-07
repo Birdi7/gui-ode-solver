@@ -80,13 +80,14 @@ object ChartGenerator {
         val result = VBox()
         result += generateSolutionsChart()
         result += generateLocalErrorsChart()
+        result += generateGlobalErrorsChart()
         return result
     }
 
     fun generateSolutionsChart(): LineChart<Number, Number> {
         val chart = getXYChart()
         chart.title = "Solutions chart"
-        for (name in ComputationalMethodsManager.listOfMethods.filter { it.value.isSelected }.keys) {
+        for ((name, method) in ComputationalMethodsManager.getSelectedMethods()) {
             chart.series(name) {
                 for ((x, y) in ComputationalMethodsManager.compute(name)) {
                     this.data(x, y)
@@ -104,10 +105,23 @@ object ChartGenerator {
     fun generateLocalErrorsChart(): LineChart<Number, Number> {
         val chart = getXYChart()
         chart.title = "Local errors chart"
-        for (name in ComputationalMethodsManager.listOfMethods.filter { it.value.isSelected }.keys) {
+        for ((name, method) in ComputationalMethodsManager.getSelectedMethods()) {
             chart.series(name) {
                 for ((x, y) in ComputationalMethodsManager.computeLocalErrors(name)) {
                     this.data(x, y)
+                }
+            }
+        }
+        return chart
+    }
+
+    fun generateGlobalErrorsChart(): LineChart<Number, Number> {
+        val chart = getXYChart("n", "max error")
+        chart.title = "Global error chart"
+        for ((name, method) in ComputationalMethodsManager.getSelectedMethods()) {
+            chart.series(name) {
+                for ((n, max_error) in ComputationalMethodsManager.computeGlobalErrors(name)) {
+                    this.data(n, max_error)
                 }
             }
         }
