@@ -1,5 +1,6 @@
 import javafx.beans.property.SimpleBooleanProperty
 import tornadofx.*
+import java.lang.Math.abs
 
 object ComputationalMethodsManager {
     val listOfMethods: MutableMap<String, ComputationalMethod> = mutableMapOf()
@@ -35,7 +36,7 @@ abstract class ComputationalMethod {
         val result = mutableMapOf<Double, Double>()
         val computed_result = computeFor(initialValues)
         for ((x, y) in computed_result) {
-            result[x] = ExactSolution.computeFor(x) - y
+            result[x] = abs(ExactSolution.computeFor(x) - y)
         }
         return result
     }
