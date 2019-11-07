@@ -84,38 +84,34 @@ object ChartGenerator {
     }
 
     fun generateSolutionsChart(): LineChart<Number, Number> {
-        val v = getXYChart()
-        v.series("Exact") {
-            for ((x, y) in ExactSolution.computeFor(ComputationalMethodsManager.initialValues)) {
-                this.data(x, y)
-            }
-        }
-
+        val chart = getXYChart()
+        chart.title = "Solutions chart"
         for (name in ComputationalMethodsManager.listOfMethods.filter { it.value.isSelected }.keys) {
-            v.series(name) {
+            chart.series(name) {
                 for ((x, y) in ComputationalMethodsManager.compute(name)) {
                     this.data(x, y)
                 }
             }
         }
-        v.series("Exact") {
+        chart.series("Exact") {
             for ((x, y) in ExactSolution.computeFor(ComputationalMethodsManager.initialValues)) {
                 this.data(x, y)
             }
         }
-        return v
+        return chart
     }
 
     fun generateLocalErrorsChart(): LineChart<Number, Number> {
-        val v = getXYChart()
+        val chart = getXYChart()
+        chart.title = "Local errors chart"
         for (name in ComputationalMethodsManager.listOfMethods.filter { it.value.isSelected }.keys) {
-            v.series(name) {
+            chart.series(name) {
                 for ((x, y) in ComputationalMethodsManager.computeLocalErrors(name)) {
                     this.data(x, y)
                 }
             }
         }
-        return v
+        return chart
     }
 
     private fun getXYChart(label1: String = "x", label2: String = "y"): LineChart<Number, Number> {
@@ -123,6 +119,7 @@ object ChartGenerator {
         x.label = label1
         val y = NumberAxis()
         y.label = label2
-        return LineChart<Number, Number>(x, y)
+        val chart = LineChart<Number, Number>(x, y)
+        return chart
     }
 }
