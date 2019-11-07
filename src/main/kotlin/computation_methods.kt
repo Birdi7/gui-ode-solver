@@ -33,8 +33,8 @@ object ComputationalMethodsManager {
         name: String,
         iniValues: InitialValuesInfo = initialValues,
         data: TotalErrorData = totalErrorInfo
-    ): MutableMap<Double, Double> {
-        return listOfMethods[name]!!.computeGlobalErrors(initialValues, data)
+    ): MutableMap<Int, Double> {
+        return listOfMethods[name]!!.computeGlobalErrors(iniValues, data)
     }
 
     fun initMethod(method: ComputationalMethod) {
@@ -51,16 +51,35 @@ abstract class ComputationalMethod {
 
     fun computeLocalErrors(initialValues: InitialValuesInfo): MutableMap<Double, Double> {
         val result = mutableMapOf<Double, Double>()
-        val computed_result = computeFor(initialValues)
-        for ((x, y) in computed_result) {
+        val computedResult = computeFor(initialValues)
+        for ((x, y) in computedResult) {
             result[x] = abs(ExactSolution.computeFor(x) - y)
         }
         return result
     }
 
-    fun computeGlobalErrors(initialValues: InitialValuesInfo, errorData: TotalErrorData): MutableMap<Double, Double> {
-        return mutableMapOf()
+    fun computeGlobalErrors(initialValues: InitialValuesInfo, errorData: TotalErrorData): MutableMap<Int, Double> {
+        val result = mutableMapOf<Int, Double>()
+        for (current_n in errorData.n0..errorData.nMax) {
+            val newIniValues = initialValues.clone()
+            newIniValues.numberOfSteps = current_n
+            val errors = computeLocalErrors(newIniValues)
+            result[current_n] = errors.getMyMax()
+        }
+
+        return result
     }
+}
+
+fun MutableMap<Double, Double>.getMyMax(): Double {
+    if (this.isEmpty()) return 0.0
+    var max: Double = -1.0
+    for ((k, v) in this) {
+        if (max == -1.0 || v > max) {
+            max = v
+        }
+    }
+    return max
 }
 
 class EulerMethod : ComputationalMethod() {

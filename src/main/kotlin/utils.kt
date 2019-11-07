@@ -39,11 +39,22 @@ class InitialValuesInfo(
         "xMax" to xMaxProperty,
         "n" to numberOfStepsProperty
     )
+
+    fun clone(): InitialValuesInfo {
+        return InitialValuesInfo(
+            x0=this.x0,
+            y0=this.y0,
+            xMax = this.xMax,
+            numberOfSteps = this.numberOfSteps
+        )
+    }
 }
 
-data class TotalErrorData(var n0: Int = 1, var nMax: Int = 10) {
-    val n0Property = n0.toProperty()
-    val nMaxProperty = nMax.toProperty()
+class TotalErrorData(n0: Int = 40, nMax: Int = 60) {
+    val n0Property = SimpleIntegerProperty(n0)
+    var n0 by n0Property
+    val nMaxProperty = SimpleIntegerProperty(nMax)
+    var nMax by nMaxProperty
 
     val mapOfProperties = mapOf(
         "n0" to n0Property,
