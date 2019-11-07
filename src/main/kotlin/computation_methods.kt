@@ -113,7 +113,7 @@ class ImprovedEulerMethod : ComputationalMethod() {
             val h = initialValues.h
 
             val k1 = initialValues.initialFunction.computeFor(currentX, currentY)
-            val deltaY = initialValues.initialFunction.computeFor(currentX + h/2.0, currentY + h/2.0 * k1)
+            val deltaY = initialValues.initialFunction.computeFor(currentX + h / 2.0, currentY + h / 2.0 * k1)
             currentY += h * deltaY
             currentX += initialValues.h
             result[currentX] = currentY
