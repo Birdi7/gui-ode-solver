@@ -3,7 +3,6 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.chart.LineChart
 import javafx.scene.chart.NumberAxis
-import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import tornadofx.*
@@ -85,7 +84,7 @@ object ChartGenerator {
     }
 
     fun generateSolutionsChart(): LineChart<Number, Number> {
-        val v = LineChart<Number, Number>(NumberAxis(), NumberAxis())
+        val v = getXYChart()
         v.series("Exact") {
             for ((x, y) in ExactSolution.computeFor(ComputationalMethodsManager.initialValues)) {
                 this.data(x, y)
@@ -108,7 +107,7 @@ object ChartGenerator {
     }
 
     fun generateLocalErrorsChart(): LineChart<Number, Number> {
-        val v = LineChart<Number, Number>(NumberAxis(), NumberAxis())
+        val v = getXYChart()
         for (name in ComputationalMethodsManager.listOfMethods.filter { it.value.isSelected }.keys) {
             v.series(name) {
                 for ((x, y) in ComputationalMethodsManager.computeLocalErrors(name)) {
@@ -117,5 +116,13 @@ object ChartGenerator {
             }
         }
         return v
+    }
+
+    private fun getXYChart(label1: String = "x", label2: String = "y"): LineChart<Number, Number> {
+        val x = NumberAxis()
+        x.label = label1
+        val y = NumberAxis()
+        y.label = label2
+        return LineChart<Number, Number>(x, y)
     }
 }

@@ -35,7 +35,7 @@ class MyView : View() {
                         }
                     }
                 }
-                fieldset("Values for Max error") {
+                fieldset("Values for total error") {
                     for ((name, property) in ComputationalMethodsManager.totalErrorInfo.mapOfProperties) {
                         vbox {
                             label(name)
