@@ -146,7 +146,3 @@ class RungeKuttaMethod : ComputationalMethod() {
         return result
     }
 }
-
-
-// todo: if x0 is not endpoint????
-// p.131 from textbook
