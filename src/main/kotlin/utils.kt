@@ -18,7 +18,7 @@ class InitialValuesInfo(
     x0: Double = 0.0,
     y0: Double = 1.0,
     xMax: Double = 20.0,
-    numberOfSteps: Int = 40
+    numberOfSteps: Int = 30
 ) {
     private val x0Property = SimpleDoubleProperty(x0)
     var x0 by x0Property
@@ -51,7 +51,7 @@ class InitialValuesInfo(
     }
 }
 
-class TotalErrorData(n0: Int = 100, nMax: Int = 200) {
+class TotalErrorData(n0: Int = 30, nMax: Int = 110) {
     val n0Property = SimpleIntegerProperty(n0)
     var n0 by n0Property
     val nMaxProperty = SimpleIntegerProperty(nMax)
