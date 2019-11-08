@@ -3,6 +3,7 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.chart.LineChart
 import javafx.scene.chart.NumberAxis
+import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
@@ -89,6 +90,10 @@ object ExactSolution {
 object ChartGenerator {
     fun getBoxWithAll(): Pane {
         val result = HBox()
+        if (!ensureDataCorrect()) {
+            result += Label("Wrong data entered!")
+            return result
+        }
         result += generateSolutionsChart()
         result += VBox(generateLocalErrorsChart(), generateTotalErrorsChart())
         return result
@@ -157,4 +162,16 @@ fun MutableMap<Double, Double>.getMaxByValue(): Double {
         }
     }
     return max
+}
+
+fun ensureDataCorrect(): Boolean {
+    return ensureTotalErrorData() && ensureInitialValuesCorrect()
+}
+
+fun ensureTotalErrorData(totalErrorData: TotalErrorData = ComputationalMethodsManager.totalErrorInfo): Boolean {
+    return (totalErrorData.n0 <= totalErrorData.nMax)
+}
+
+fun ensureInitialValuesCorrect(iniValues: InitialValuesInfo = ComputationalMethodsManager.initialValues): Boolean {
+    return (iniValues.x0 <= iniValues.xMax)
 }
